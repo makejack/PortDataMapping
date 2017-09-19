@@ -18,7 +18,7 @@ namespace PortDataMapping
         private string PARAMFILENAME = "Param.xml";
         private SystemParam _systemParam;
         private SerialPortEx _mPort;
-        private List<string> _portNames;
+        private SearchSerialPort _mSearchPort;
         private int _splitLenght = 50;
         private int _currentLenght;
         private Pen _backgroundPen;
@@ -47,7 +47,7 @@ namespace PortDataMapping
             ud_SpliteData.ValueChanged += Ud_Data_ValueChanged;
             btn_Clear.Click += Btn_Clear_Click;
         }
-
+ 
         private void Cb_IsDeviation_CheckedChanged(object sender, EventArgs e)
         {
             ud_Deviation.Enabled = !cb_IsDeviation.Checked;
@@ -215,9 +215,55 @@ namespace PortDataMapping
             _mPort = new SerialPortEx();
             _mPort.PortChange += _mPort_PortChange;
             _mPort.DataReceived += _mPort_DataReceived;
-            _mPort.SerialPortCountChange += _mPort_SerialPortCountChange;
-            _mPort.Start();
+            _mSearchPort = new SearchSerialPort(100);
+            _mSearchPort.SerialPortCountChanged += SerialPortCountChange;
+            _mSearchPort.Start();
+        }
 
+        private void SerialPortCountChange(string[] PortNames)
+        {
+            if (_mPort.IsOpen)
+            {
+                if (!_mSearchPort.SerialPortNames.Contains(_mPort.PortName))
+                {
+                    try
+                    {
+                        _mPort.Close();
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+
+            this.Invoke(new EventHandler(delegate
+            {
+                cb_PortNames.Items.Clear();
+                if (PortNames.Length > 0)
+                {
+                    cb_PortNames.Items.AddRange(PortNames);
+                    if (_mPort.IsOpen)
+                    {
+                        int index = cb_PortNames.Items.IndexOf(_mPort.PortName);
+                        cb_PortNames.SelectedIndex = index;
+                    }
+                    else
+                    {
+                        if (cb_PortNames.Items.Count > 0)
+                        {
+                            if (!string.IsNullOrEmpty(_systemParam.PortName))
+                            {
+                                int index = cb_PortNames.Items.IndexOf(_systemParam.PortName);
+                                cb_PortNames.SelectedIndex = index > 0 ? index : 0;
+                            }
+                            else
+                            {
+                                cb_PortNames.SelectedIndex = 0;
+                            }
+                        }
+                    }
+                }
+            }));
         }
 
         private void Btn_Port_Click(object sender, EventArgs e)
@@ -312,54 +358,6 @@ namespace PortDataMapping
                 cb_StopBit.Enabled = true;
                 cb_Parity.Enabled = true;
             }
-        }
-
-        private void _mPort_SerialPortCountChange(List<string> portnames)
-        {
-            _portNames = portnames;
-
-            if (_mPort.IsOpen)
-            {
-                if (!portnames.Contains(_mPort.PortName))
-                {
-                    try
-                    {
-                        _mPort.Close();
-                    }
-                    catch
-                    {
-                    }
-                }
-            }
-
-            this.Invoke(new EventHandler(delegate
-            {
-                cb_PortNames.Items.Clear();
-                if (_portNames.Count > 0)
-                {
-                    cb_PortNames.Items.AddRange(_portNames.ToArray());
-                    if (_mPort.IsOpen)
-                    {
-                        int index = cb_PortNames.Items.IndexOf(_mPort.PortName);
-                        cb_PortNames.SelectedIndex = index;
-                    }
-                    else
-                    {
-                        if (cb_PortNames.Items.Count > 0)
-                        {
-                            if (!string.IsNullOrEmpty(_systemParam.PortName))
-                            {
-                                int index = cb_PortNames.Items.IndexOf(_systemParam.PortName);
-                                cb_PortNames.SelectedIndex = index > 0 ? index : 0;
-                            }
-                            else
-                            {
-                                cb_PortNames.SelectedIndex = 0;
-                            }
-                        }
-                    }
-                }
-            }));
         }
 
         private void _mPort_DataReceived(int port)

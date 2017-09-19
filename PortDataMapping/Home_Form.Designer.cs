@@ -34,6 +34,8 @@
             this.cb_PortNames = new System.Windows.Forms.ComboBox();
             this.cb_BaudRate = new System.Windows.Forms.ComboBox();
             this.p_Right = new System.Windows.Forms.Panel();
+            this.ud_Yinterval = new System.Windows.Forms.NumericUpDown();
+            this.label11 = new System.Windows.Forms.Label();
             this.ud_StartRow = new System.Windows.Forms.NumericUpDown();
             this.label10 = new System.Windows.Forms.Label();
             this.ud_Deviation = new System.Windows.Forms.NumericUpDown();
@@ -58,15 +60,13 @@
             this.btn_Port = new System.Windows.Forms.Button();
             this.plot = new NPlot.Windows.PlotSurface2D();
             this.rtbTxt = new System.Windows.Forms.RichTextBox();
-            this.ud_Yinterval = new System.Windows.Forms.NumericUpDown();
-            this.label11 = new System.Windows.Forms.Label();
             this.p_Right.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ud_Yinterval)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ud_StartRow)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ud_Deviation)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ud_DelayMilliseconds)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ud_Xinterval)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.ud_SpliteData)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ud_Yinterval)).BeginInit();
             this.SuspendLayout();
             // 
             // l_PortNameTitle
@@ -144,6 +144,42 @@
             this.p_Right.Name = "p_Right";
             this.p_Right.Size = new System.Drawing.Size(200, 511);
             this.p_Right.TabIndex = 1;
+            // 
+            // ud_Yinterval
+            // 
+            this.ud_Yinterval.Increment = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.ud_Yinterval.Location = new System.Drawing.Point(86, 206);
+            this.ud_Yinterval.Maximum = new decimal(new int[] {
+            999999,
+            0,
+            0,
+            0});
+            this.ud_Yinterval.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.ud_Yinterval.Name = "ud_Yinterval";
+            this.ud_Yinterval.Size = new System.Drawing.Size(103, 21);
+            this.ud_Yinterval.TabIndex = 28;
+            this.ud_Yinterval.Value = new decimal(new int[] {
+            127,
+            0,
+            0,
+            0});
+            // 
+            // label11
+            // 
+            this.label11.AutoSize = true;
+            this.label11.Location = new System.Drawing.Point(15, 210);
+            this.label11.Name = "label11";
+            this.label11.Size = new System.Drawing.Size(65, 12);
+            this.label11.TabIndex = 29;
+            this.label11.Text = "Y轴最大值:";
             // 
             // ud_StartRow
             // 
@@ -427,7 +463,7 @@
             this.plot.Location = new System.Drawing.Point(0, 0);
             this.plot.Name = "plot";
             this.plot.RightMenu = null;
-            this.plot.ShowCoordinates = true;
+            this.plot.ShowCoordinates = false;
             this.plot.Size = new System.Drawing.Size(801, 415);
             this.plot.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.None;
             this.plot.TabIndex = 2;
@@ -447,42 +483,6 @@
             this.rtbTxt.TabIndex = 3;
             this.rtbTxt.Text = "";
             // 
-            // ud_Yinterval
-            // 
-            this.ud_Yinterval.Increment = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.ud_Yinterval.Location = new System.Drawing.Point(86, 206);
-            this.ud_Yinterval.Maximum = new decimal(new int[] {
-            999999,
-            0,
-            0,
-            0});
-            this.ud_Yinterval.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this.ud_Yinterval.Name = "ud_Yinterval";
-            this.ud_Yinterval.Size = new System.Drawing.Size(103, 21);
-            this.ud_Yinterval.TabIndex = 28;
-            this.ud_Yinterval.Value = new decimal(new int[] {
-            127,
-            0,
-            0,
-            0});
-            // 
-            // label11
-            // 
-            this.label11.AutoSize = true;
-            this.label11.Location = new System.Drawing.Point(15, 210);
-            this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(65, 12);
-            this.label11.TabIndex = 29;
-            this.label11.Text = "Y轴最大值:";
-            // 
             // Home_Form
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -496,12 +496,12 @@
             this.Text = "端口数据绘表软件";
             this.p_Right.ResumeLayout(false);
             this.p_Right.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.ud_Yinterval)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ud_StartRow)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ud_Deviation)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ud_DelayMilliseconds)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ud_Xinterval)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.ud_SpliteData)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.ud_Yinterval)).EndInit();
             this.ResumeLayout(false);
 
         }

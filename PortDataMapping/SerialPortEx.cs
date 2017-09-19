@@ -8,81 +8,6 @@ namespace PortDataMapping
 {
     public class SerialPortEx
     {
-        private Thread tSearchPortCom;
-
-        private bool IsSearch;
-
-        public void Start()
-        {
-            if (tSearchPortCom == null)
-            {
-                IsSearch = true;
-                tSearchPortCom = new Thread(SearchPortCom);
-                tSearchPortCom.IsBackground = true;
-                tSearchPortCom.Start();
-            }
-        }
-
-        public void Stop()
-        {
-            if (tSearchPortCom == null) return;
-            IsSearch = false;
-        }
-
-        public delegate void SerialPortCountEventHandler(List<string> portnames);
-        public event SerialPortCountEventHandler SerialPortCountChange;
-
-        private void OnSerialPortCountChange(List<string> portnames)
-        {
-            SerialPortCountChange?.Invoke(portnames);
-        }
-
-
-        private int _PortCount;
-
-        public int PortCount
-        {
-            get { return _PortCount; }
-        }
-
-        private List<string> _SerialPortNames;
-
-        public List<string> SerialPortNames
-        {
-            get { return _SerialPortNames; }
-        }
-
-
-        private void SearchPortCom()
-        {
-            Computer pc = new Computer();
-            do
-            {
-                if (_PortCount != pc.Ports.SerialPortNames.Count)
-                {
-                    _PortCount = pc.Ports.SerialPortNames.Count;
-                    _SerialPortNames = new List<string>();
-                    _SerialPortNames.AddRange(pc.Ports.SerialPortNames);
-                    try
-                    {
-                        if (IsOpen && !_SerialPortNames.Contains(PortName))
-                        {
-                            Close();
-                        }
-                    }
-                    catch
-                    {
-
-                    }
-                    finally
-                    {
-                        OnSerialPortCountChange(_SerialPortNames);
-                    }
-                }
-                Thread.Sleep(100);
-            } while (IsSearch);
-            tSearchPortCom = null;
-        }
 
         public delegate void PortChangeEventHandler(bool flag);
 
@@ -198,8 +123,22 @@ namespace PortDataMapping
             {
                 GetErrorCode(WinApi.sio_open(PortIndex));
                 GetErrorCode(WinApi.sio_ioctl(PortIndex, _BaudRate, _DataBit | _StopBit | _Parity));
+                SetWriteTimeouts(100);
                 SetDataReceived();
                 IsOpen = true;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public void SetWriteTimeouts(int totalTimeouts)
+        {
+            try
+            {
+                int result = WinApi.sio_SetWriteTimeouts(PortIndex, totalTimeouts);
+                GetErrorCode(result);
             }
             catch (Exception ex)
             {

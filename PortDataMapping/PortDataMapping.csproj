@@ -57,6 +57,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SerialPortEx.cs" />
     <Compile Include="WinApi.cs" />
+    <Compile Include="SearchSerialPort.cs" />
     <EmbeddedResource Include="Home_Form.resx">
       <DependentUpon>Home_Form.cs</DependentUpon>
     </EmbeddedResource>
